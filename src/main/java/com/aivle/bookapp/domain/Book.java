@@ -28,6 +28,8 @@ public class Book {
 
     private String summary;
 
+    private String copy;
+
     @Column(name = "cover_image_url")
     private String coverImageUrl;
 
