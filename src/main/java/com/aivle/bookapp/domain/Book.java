@@ -6,9 +6,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import java.time.LocalDateTime;
 
-/**
- * 도서 엔티티
- */
 @Entity
 @Table(name = "books")
 @Getter
@@ -23,7 +20,7 @@ public class Book {
     private Long id;
 
     @NotBlank(message = "도서 제목은 필수입니다.")
-    @Size(max = 200, message = "제목은 200자를 넘을 수 없습니다.")
+    @Size(max = 100, message = "제목은 100자를 넘을 수 없습니다.")
     @Column(nullable = false)
     private String title;
 
@@ -31,14 +28,11 @@ public class Book {
     @Column(nullable = false)
     private String author;
 
-    private String isbn;
-
-    @Column(length = 1000)
-    private String description;
-
+    @NotBlank(message = "내용은 필수입니다.")
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+    @Size(max = 200, message = "한줄소개는 200자를 넘을 수 없습니다.")
     private String summary;
 
     private String copy;
@@ -46,13 +40,24 @@ public class Book {
     @Column(name = "cover_image_url")
     private String coverImageUrl;
 
-    private Integer likes;
+    @Builder.Default
+    @Column(nullable = false)
+    private Integer likes = 0;
 
-    private String tags; // 콤마(,)로 구분된 태그 목록
-
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }
