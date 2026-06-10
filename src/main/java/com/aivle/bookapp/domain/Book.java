@@ -4,14 +4,20 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import java.time.LocalDateTime;
 
+/**
+ * 도서 엔티티
+ */
 @Entity
+@Table(name = "books")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Book {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,4 +35,24 @@ public class Book {
 
     @Column(length = 1000)
     private String description;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String content;
+
+    private String summary;
+
+    private String copy;
+
+    @Column(name = "cover_image_url")
+    private String coverImageUrl;
+
+    private Integer likes;
+
+    private String tags; // 콤마(,)로 구분된 태그 목록
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 }
