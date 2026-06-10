@@ -52,8 +52,21 @@ public class BookService {
      * 도서 신규 저장
      */
     @Transactional
+<<<<<<< Updated upstream
     public Book save(Book book) {
         return bookRepository.save(book);
+=======
+    public Book create(Book book, List<String> tags, String embeddingJson, Long embeddingDurationMs){
+
+        if (book.getLikes() == null) {
+            book.setLikes(0);
+        }
+        Book saved = bookRepository.save(book);
+
+        // 태그 저장
+        // 임베딩 저장
+        return saved;
+>>>>>>> Stashed changes
     }
 
     /**

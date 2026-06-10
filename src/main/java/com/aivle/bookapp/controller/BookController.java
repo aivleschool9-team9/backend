@@ -25,9 +25,6 @@ public class BookController {
 
     /**
      * 1. 도서 목록 조회 (통합 검색, 정렬, 태그 필터링 포함)
-     * - GET /books
-     * - GET /books?keyword=어린왕자&sort=newest
-     * - GET /books?tag=스프링
      */
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks(
@@ -36,17 +33,7 @@ public class BookController {
             @RequestParam(required = false) String tag) {
 
         log.info("Request to get books - keyword: {}, sort: {}, tag: {}", keyword, sort, tag);
-
-        List<Book> books;
-
-        // 태그별 도서 조건 처리
-        if (tag != null && !tag.isEmpty()) {
-            books = bookService.findByTagName(tag);
-        } else {
-            // 일반 목록 조회 및 키워드 검색 (정렬 조건 포함)
-            books = bookService.findAll(keyword, sort);
-        }
-
+        List<Book> books = bookService.findAllWithFilter(keyword, sort, tag);
         return ResponseEntity.ok(books);
     }
 
@@ -66,7 +53,7 @@ public class BookController {
     @PostMapping
     public ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
         log.info("Request to create book: {}", book.getTitle());
-        Book savedBook = bookService.save(book);
+        Book savedBook = bookService.create(book, null, null, null);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -82,7 +69,8 @@ public class BookController {
     @PatchMapping("/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable Long id, @Valid @RequestBody Book book) {
         log.info("Request to update book id: {}", id);
-        Book updatedBook = bookService.update(id, book);
+        Book updatedBook = bookService.update(id, book, null, null, null);
+        
         return ResponseEntity.ok(updatedBook);
     }
 

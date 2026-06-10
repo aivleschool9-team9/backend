@@ -50,6 +50,8 @@ public class Book {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    private String tags;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
