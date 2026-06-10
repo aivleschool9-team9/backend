@@ -2,6 +2,7 @@ package com.aivle.bookapp.service;
 
 
 import com.aivle.bookapp.domain.Book;
+import com.aivle.bookapp.domain.BookEmbedding;
 import com.aivle.bookapp.exception.BookNotFoundException;
 import com.aivle.bookapp.repository.BookRepository;
 import com.aivle.bookapp.repository.BookTagRepository;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 public class BookService {
     private final BookRepository bookRepository;
     private final TagService tagService;
-    //private final BookEmbeddingService bookEmbeddingService;
+    private final BookEmbeddingService bookEmbeddingService;
     private final BookTagRepository bookTagRepository;
 
     // 전체 도서 목록 조회
@@ -46,6 +47,16 @@ public class BookService {
             tagService.saveBookTags(saved.getId(), tags);
         }
         // 임베딩 저장
+        if (embeddingJson != null && !embeddingJson.isBlank()){
+            BookEmbedding embedding = BookEmbedding.builder()
+                    .bookId(saved.getId())
+                    .embeddingJson(embeddingJson)
+                    .embeddingModel("text-embedding-3-small")
+                    .embeddingDurationMs(embeddingDurationMs)
+                    .embeddingUpdatedAt(LocalDateTime.now())
+                    .build();
+            bookEmbeddingService.save(embedding);
+        }
         return saved;
     }
 
