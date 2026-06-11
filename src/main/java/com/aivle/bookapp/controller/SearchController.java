@@ -2,6 +2,7 @@ package com.aivle.bookapp.controller;
 
 import com.aivle.bookapp.domain.Book;
 import com.aivle.bookapp.domain.SearchLog;
+import com.aivle.bookapp.domain.SearchResultClick;
 import com.aivle.bookapp.service.BookService;
 import com.aivle.bookapp.service.SearchLogService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -110,7 +112,21 @@ public class SearchController {
         return ResponseEntity.ok(response);
     }
 
-    // TODO: 3. 검색 결과 클릭 로그 저장 (POST /search/{searchLogId}/click)
-    // - body: { "bookId": 1, "rankPosition": 1, "similarityScore": 0.9 }
-    // - AI 의미 검색 시에만 저장, 클릭 시 순위/유사도 기록
+    /**
+     * 3. 검색 결과 클릭 로그 저장 (POST /search/{searchLogId}/click)
+     * body: { "bookId": 1, "rankPosition": 1, "similarityScore": 0.9 }
+     * AI 의미 검색 시에만 저장, 클릭 시 순위/유사도 기록
+     */
+    @PostMapping("{searchLogId}/click")
+    public void semanticSearch(@PathVariable Long searchLogId, @RequestBody Map<String, Object> body) {
+        Long bookId = (Long)body.get("bookId");
+        Integer rankPosition = (Integer)body.get("rankPosition");
+        Float similarityScore = (Float)body.get("similarityScore");
+        LocalDateTime time = LocalDateTime.now();
+
+        SearchResultClick click = SearchResultClick.builder().searchLogId(searchLogId).bookId(bookId).rankPosition(rankPosition).similarityScore(similarityScore).clickedAt(time).build();
+
+        searchLogService.saveClickLog(click);
+    }
+
 }
