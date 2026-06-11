@@ -17,8 +17,6 @@ import java.util.Optional;
 @AllArgsConstructor
 @Builder
 public class BookUpdateRequest {
-    private Long id;
-
     @Builder.Default
     private Optional<String> title = Optional.empty();
 
@@ -45,9 +43,6 @@ public class BookUpdateRequest {
 
     @Builder.Default
     private Optional<Long> embeddingDurationMs = Optional.empty();
-
-    @Builder.Default
-    private Optional<Integer> likes = Optional.empty();
 
     public boolean hasTitle() {
         return hasValue(title);
@@ -119,14 +114,6 @@ public class BookUpdateRequest {
 
     public Long getEmbeddingDurationMs() {
         return getRequiredValue(embeddingDurationMs, "embeddingDurationMs");
-    }
-
-    public boolean hasLikes() {
-        return hasValue(likes);
-    }
-
-    public Integer getLikes() {
-        return getRequiredValue(likes, "likes");
     }
 
     private static boolean hasValue(Optional<?> value) {

@@ -4,6 +4,7 @@ package com.aivle.bookapp.service;
 import com.aivle.bookapp.domain.Book;
 import com.aivle.bookapp.domain.BookEmbedding;
 import com.aivle.bookapp.domain.Tag;
+import com.aivle.bookapp.dto.request.BookCreateRequest;
 import com.aivle.bookapp.dto.request.BookUpdateRequest;
 import com.aivle.bookapp.dto.response.BookResponse;
 import com.aivle.bookapp.dto.response.BookSummaryResponse;
@@ -86,19 +87,29 @@ public class BookService {
 
     // 새 도서 등록 + 태그 저장 + 임베딩 저장
     @Transactional
-    public BookResponse create(Book book, List<String> tags, List<Float> embeddingJson, Long embeddingDurationMs){
+    public BookResponse create(BookCreateRequest request) {
+        Book book = Book.builder()
+                .title(request.getTitle())
+                .author(request.getAuthor())
+                .content(request.getContent())
+                .summary(request.getSummary())
+                .copy(request.getCopy())
+                .coverImageUrl(request.getCoverImageUrl())
+                .build();
         Book saved = bookRepository.save(book);
 
         // 태그 저장
-        if (tags != null && !tags.isEmpty()) {
-            tagService.saveBookTags(saved.getId(), tags);
+        if (request.getTags() != null && !request.getTags().isEmpty()) {
+            tagService.saveBookTags(saved.getId(), request.getTags());
         }
         // 임베딩 저장
-        bookEmbeddingService.save(
-                saved.getId(),
-                embeddingJson,
-                embeddingDurationMs
-        );
+        if (request.getEmbeddingJson() != null && !request.getEmbeddingJson().isEmpty()) {
+            bookEmbeddingService.save(
+                    saved.getId(),
+                    request.getEmbeddingJson(),
+                    request.getEmbeddingDurationMs()
+            );
+        }
         return makeBookResponse(saved);
     }
 
@@ -114,7 +125,6 @@ public class BookService {
         if (request.hasContent()) existing.setContent(request.getContent());
         if (request.hasCopy()) existing.setCopy(request.getCopy());
         if (request.hasCoverImageUrl()) existing.setCoverImageUrl(request.getCoverImageUrl());
-        if (request.hasLikes()) existing.setLikes(Math.max(0, request.getLikes()));
 
         Book updated = bookRepository.save(existing);
 

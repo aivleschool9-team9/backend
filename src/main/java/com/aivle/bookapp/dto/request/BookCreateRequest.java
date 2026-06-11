@@ -1,6 +1,5 @@
 package com.aivle.bookapp.dto.request;
 
-import com.aivle.bookapp.domain.Book;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -8,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class BookCreateRequest {
-    private Long id;
-
     @NotBlank(message = "도서 제목은 필수입니다.")
     private String title;
 
@@ -41,14 +37,4 @@ public class BookCreateRequest {
     private List<Float> embeddingJson;
 
     private Long embeddingDurationMs;
-
-    @Builder.Default
-    private Integer likes = 0;
-
-    @Builder.Default
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    public Book makeBook() {
-        return new Book(id, title, author, content, summary, copy, coverImageUrl, likes, createdAt, createdAt);
-    }
 }

@@ -77,8 +77,7 @@ public class BookController {
     public ResponseEntity<BookResponse> createBook(@Valid @RequestBody BookCreateRequest bookRequest) {
         log.info("Request to create book: {}", bookRequest.getTitle());
         // 요청 body의 tags / embedding 을 그대로 전달 (Book 의 @Transient 필드)
-        Book book = bookRequest.makeBook();
-        BookResponse savedBook = bookService.create(book, bookRequest.getTags(), bookRequest.getEmbeddingJson(), bookRequest.getEmbeddingDurationMs());
+        BookResponse savedBook = bookService.create(bookRequest);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
