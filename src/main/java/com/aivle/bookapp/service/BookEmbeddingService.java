@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BookEmbeddingService {
@@ -36,6 +38,13 @@ public class BookEmbeddingService {
         }
     }
 
-
+    /**
+     * 전체 도서 임베딩 목록 조회
+     * @return List<BookEmbedding> 전체 임베딩 목록
+     */
+    @Transactional(readOnly = true)
+    public List<BookEmbedding> findAll() {
+        return bookEmbeddingRepository.findAll();
+    }
 
 }
