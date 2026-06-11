@@ -43,7 +43,6 @@ public class Book {
     @Column(name = "cover_image_url")
     private String coverImageUrl;
 
-    // 💡 Jackson이 필드를 직접 건드리지 못하게 설정
     @Transient
     @Builder.Default
     @Setter(AccessLevel.NONE)
@@ -60,7 +59,6 @@ public class Book {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    // 💡 입력은 이 메서드가 전담 (문자열, 리스트, JsonNode 모두 수용)
     @com.fasterxml.jackson.annotation.JsonProperty("tags")
     public void setTags(Object value) {
         if (value == null) {
