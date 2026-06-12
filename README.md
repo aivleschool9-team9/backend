@@ -263,6 +263,25 @@ src/main/java/com/aivle/bookapp
 
 ---
 
+## 👥 팀 R&R
+
+> 9팀 (`AI_##조`)
+
+| 역할 | 담당 | 주요 기여 |
+| --- | --- | --- |
+| **PM** | 이서영 | 일정·진행 관리, PR 리뷰, 브랜치 통합·빌드 정상화, 버그 트러블슈팅 |
+| **Backend** | 오서하 | 도메인 엔티티·레포지토리 설계 (Book/Tag/BookTag/BookEmbedding/SearchLog/SearchResultClick) |
+| **Backend** | 김수연 | BookService·TagService (CRUD, 태그·임베딩 저장, 검색 로직) |
+| **Backend** | 구태훈 | BookController (도서 CRUD 엔드포인트) |
+| **Backend / AI** | 최기성 | SearchController (키워드·시맨틱 검색, 코사인 유사도) |
+| **Backend / AI** | 김성우 | SearchLog 서비스·컨트롤러, 검색·클릭 로그 추적 |
+| **Frontend** | 유지인 | 프론트–백엔드 연동, DTO 설계, 이미지 업로드 연동 |
+| **Frontend** | 김다민 | 프론트–백엔드 연동, 예외 시나리오 검증 |
+
+> R&R은 실제 분담에 맞게 조정하세요.
+
+---
+
 ## 🔍 구현 세부 내용 (주요 소스코드)
 
 > 미션 3~7의 핵심 구현과, 미션을 넘어 추가로 구현한 심화 기능을 정리합니다.
